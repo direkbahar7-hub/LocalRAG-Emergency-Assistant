@@ -107,4 +107,18 @@ for i, chunk in enumerate(all_chunks, start=1):
 
 print("\nToplam embedding sayısı:", len(embedded_chunks))
 print("\nİlk embedding boyutu:", len(embedded_chunks[0]["embedding"]))
-  
+
+from src.database import create_database, insert_chunks, get_all_chunks
+
+create_database()
+insert_chunks(embedded_chunks)
+
+database_chunks = get_all_chunks()
+
+print(f"\nVeritabanındaki kayıt sayısı: {len(database_chunks)}")
+
+print("\nİlk kayıt:")
+
+print(database_chunks[0][0])
+
+print(database_chunks[0][1][:200])
