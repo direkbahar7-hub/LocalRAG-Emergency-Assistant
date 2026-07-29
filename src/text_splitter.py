@@ -1,13 +1,37 @@
-def split_text(text, chunk_size=500, overlap=100):
+def split_text(text):
+
     chunks = []
 
-    start = 0
+    current = ""
 
-    while start < len(text):
-        end = start + chunk_size
+    for line in text.splitlines():
 
-        chunks.append(text[start:end])
+        line = line.strip()
 
-        start += chunk_size - overlap
+        if not line:
+            continue
+
+        # Tek başına sayfa numaralarını at
+        if line.isdigit():
+            continue
+
+        # Çok kısa satırları at
+        if len(line) < 3:
+            continue
+
+        # Yeni büyük başlık gelirse önceki chunk'ı bitir
+        if (
+            line.isupper()
+            and len(line) < 80
+            and current
+        ):
+            chunks.append(current.strip())
+            current = line
+
+        else:
+            current += "\n" + line
+
+    if current:
+        chunks.append(current.strip())
 
     return chunks
